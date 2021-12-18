@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"i2c.h": "c",
+			"main.h": "c",
+			"stm32f7xx_hal.h": "c",
+			"inv_mpu.h": "c",
+			"inv_mpu_dmp_motion_driver.h": "c"
+		}
+	}
+}
