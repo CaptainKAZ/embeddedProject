@@ -111,8 +111,8 @@ uint8_t mpu_dmp_init(void) {
     mpu_get_gyro_fsr(&gyro_fsr);
     mpu_get_accel_fsr(&accel_fsr);
     mpu_get_compass_fsr(&compass_fsr);
-    inv_set_gyro_sample_rate(1000000L / gyro_rate);
-    inv_set_accel_sample_rate(1000000L / gyro_rate);
+    inv_set_gyro_sample_rate(1000);
+    inv_set_accel_sample_rate(1000);
     inv_set_compass_sample_rate(COMPASS_READ_MS * 1000L);
     inv_set_gyro_orientation_and_scale(
         inv_orientation_matrix_to_scalar(gyro_orientation),
@@ -140,8 +140,10 @@ uint8_t mpu_dmp_init(void) {
     if (res) return 10;
     res = mpu_set_dmp_state(1);  //使能DMP
     if (res) return 11;
+    return 0;
+  } else {
+    return -1;
   }
-  return 0;
 }
 //得到dmp处理后的数据(注意,本函数需要比较多堆栈,局部变量有点多)
 // pitch:俯仰角 精度:0.1°   范围:-90.0° <---> +90.0°
@@ -232,12 +234,41 @@ uint8_t mpu_mpl_get_data(float *pitch, float *roll, float *yaw) {
   *yaw = -data[2] / q16;
   return 0;
 }
-
+#include "feedback_task.h"
+#include "i2c.h"
+float pitch, roll, yaw;
+float yaw_mag;
+short compass_short[3];
+float compass_float[3];
+float xmin=999, xmax=-999, ymin=999, ymax=-999;
+float x = 0, y = 0;
 void ahrs_task(void) {
-  float pitch, roll, yaw;
-  osDelay(100);
-  while (1) {
-    mpu_mpl_get_data(&pitch, &roll, &yaw);
+  #ifdef MY_IIC
+  IIC_Init();
+  #endif
+  osDelay(1024);
+  while (mpu_dmp_init()) {
     osDelay(1);
+  }
+  feedback_register(&compass_float[0], 0);
+  feedback_register(&compass_float[1], 1);
+  feedback_register(&compass_float[2], 2);
+  unsigned long sensor_timestamp;
+  while (1) {
+    mpu_dmp_get_data(&pitch, &roll, &yaw);
+    mpu_get_compass_reg(compass_short, &sensor_timestamp);
+    for (int i = 0; i < 3; i++) {
+      compass_float[i] = (float)compass_short[i];
+    }
+    if (compass_short[0] > xmax) xmax +=1;
+    if (compass_short[0] < xmin) xmin -=1;
+    if (compass_short[1] > ymax) ymax +=1;
+    if (compass_short[1] < ymin) ymin -=1;
+    
+    if (xmax > xmin) x = (float)(compass_short[0] - (xmax+xmin)*0.5) / (xmax - xmin);
+    if (ymax > ymin) y = (float)(compass_short[1] - (ymax+ymin)*0.5) / (ymax - ymin);
+    yaw_mag =
+        180.0 / 3.141592653589 * atan2(y, x);
+    osDelay(5);
   }
 }

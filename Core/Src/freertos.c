@@ -73,6 +73,18 @@ const osThreadAttr_t ahrsTask_attributes = {
   .stack_size = sizeof(ahrsTaskBuffer),
   .priority = (osPriority_t) osPriorityNormal,
 };
+/* Definitions for feedbackTask */
+osThreadId_t feedbackTaskHandle;
+uint32_t feedbackTaskBuffer[ 128 ];
+osStaticThreadDef_t feedbackTaskControlBlock;
+const osThreadAttr_t feedbackTask_attributes = {
+  .name = "feedbackTask",
+  .cb_mem = &feedbackTaskControlBlock,
+  .cb_size = sizeof(feedbackTaskControlBlock),
+  .stack_mem = &feedbackTaskBuffer[0],
+  .stack_size = sizeof(feedbackTaskBuffer),
+  .priority = (osPriority_t) osPriorityLow,
+};
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -81,6 +93,7 @@ const osThreadAttr_t ahrsTask_attributes = {
 
 void chassis_task(void *argument);
 void ahrs_task(void *argument);
+void feedback_task(void *argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -162,6 +175,9 @@ void MX_FREERTOS_Init(void) {
   /* creation of ahrsTask */
   ahrsTaskHandle = osThreadNew(ahrs_task, NULL, &ahrsTask_attributes);
 
+  /* creation of feedbackTask */
+  feedbackTaskHandle = osThreadNew(feedback_task, NULL, &feedbackTask_attributes);
+
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
@@ -206,6 +222,24 @@ __weak void ahrs_task(void *argument)
     osDelay(1);
   }
   /* USER CODE END ahrs_task */
+}
+
+/* USER CODE BEGIN Header_feedback_task */
+/**
+* @brief Function implementing the feedbackTask thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_feedback_task */
+__weak void feedback_task(void *argument)
+{
+  /* USER CODE BEGIN feedback_task */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END feedback_task */
 }
 
 /* Private application code --------------------------------------------------*/

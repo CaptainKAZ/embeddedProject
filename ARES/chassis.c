@@ -41,7 +41,7 @@ void chassis_task(void) {
         int pwm = 1500;
         pwm+=chassis.wheelSpeed[i]*1000;
         sprintf(chassisCommand, "#%03dP%4dT%4d!", i, pwm, 0);
-        HAL_UART_Transmit(&huart1, (uint8_t *)chassisCommand,
+        HAL_UART_Transmit(&huart2, (uint8_t *)chassisCommand,
                           sizeof(chassisCommand), 1);
       }
     }

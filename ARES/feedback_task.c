@@ -18,37 +18,35 @@
 #include "feedback_task.h"
 #include "string.h"
 #include "usart.h"
-#include "sbus.h"
-static fp32 *  feedback_pointer[FEEDBACK_CHANNEL_NUM];
-static uint8_t tx_buf[(FEEDBACK_CHANNEL_NUM + 1) * sizeof(fp32) + 4];
+static float *  feedback_pointer[FEEDBACK_CHANNEL_NUM];
+static uint8_t tx_buf[(FEEDBACK_CHANNEL_NUM + 1) * sizeof(float) + 4];
 
-uint8_t feedback_register(fp32 *ptr, uint8_t channel) {
+uint8_t feedback_register(float *ptr, uint8_t channel) {
   if (feedback_pointer[channel] == NULL) {
     feedback_pointer[channel] = ptr;
-    return SUCCESS;
+    return 0;
   }
-  return FAIL;
+  return 1;
 }
 
 void feedback_task() {
   vTaskDelay(303);
   
   while (1) {
-    Sbus_lpf();
     for (uint8_t i = 0; i < FEEDBACK_CHANNEL_NUM; i++) {
       if (feedback_pointer[i] != NULL) {
-        memcpy(&tx_buf[i * sizeof(fp32)], feedback_pointer[i], sizeof(fp32));
+        memcpy(&tx_buf[i * sizeof(float)], feedback_pointer[i], sizeof(float));
       }else{
-        memset(&tx_buf[i * sizeof(fp32)], 0, sizeof(fp32));
+        memset(&tx_buf[i * sizeof(float)], 0, sizeof(float));
       }
     }
-    fp32 time = (fp32)xTaskGetTickCount();
-    memcpy(&tx_buf[sizeof(fp32)*FEEDBACK_CHANNEL_NUM], &time, sizeof(fp32));
-    tx_buf[(FEEDBACK_CHANNEL_NUM + 1) * sizeof(fp32) + 0] = 0x00;
-    tx_buf[(FEEDBACK_CHANNEL_NUM + 1) * sizeof(fp32) + 1] = 0x00;
-    tx_buf[(FEEDBACK_CHANNEL_NUM + 1) * sizeof(fp32) + 2] = 0x80;
-    tx_buf[(FEEDBACK_CHANNEL_NUM + 1) * sizeof(fp32) + 3] = 0x7f;
-    HAL_UART_Transmit_DMA(&huart2, tx_buf, sizeof(tx_buf));
+    float time = (float)xTaskGetTickCount();
+    memcpy(&tx_buf[sizeof(float)*FEEDBACK_CHANNEL_NUM], &time, sizeof(float));
+    tx_buf[(FEEDBACK_CHANNEL_NUM + 1) * sizeof(float) + 0] = 0x00;
+    tx_buf[(FEEDBACK_CHANNEL_NUM + 1) * sizeof(float) + 1] = 0x00;
+    tx_buf[(FEEDBACK_CHANNEL_NUM + 1) * sizeof(float) + 2] = 0x80;
+    tx_buf[(FEEDBACK_CHANNEL_NUM + 1) * sizeof(float) + 3] = 0x7f;
+    HAL_UART_Transmit_DMA(&huart1, tx_buf, sizeof(tx_buf));
     vTaskDelay(1);
   }
 }

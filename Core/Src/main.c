@@ -105,8 +105,9 @@ int main(void)
   MX_FMC_Init();
   MX_RNG_Init();
   MX_I2C2_Init();
+  MX_UART7_Init();
   /* USER CODE BEGIN 2 */
-  SDRAM_Init();
+  //SDRAM_Init();
   /* USER CODE END 2 */
 
   /* Init scheduler */

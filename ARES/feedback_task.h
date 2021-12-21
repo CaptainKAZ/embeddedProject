@@ -31,6 +31,6 @@
 #define FEEDBACK_STEER_TARGET 5
 #define FEEDBACK_DRIVE_TARGET 6
 #define FEEDBACK_DRIVE_SPEED  7
-extern uint8_t feedback_register(fp32 *ptr, uint8_t channel);
+extern uint8_t feedback_register(float *ptr, uint8_t channel);
 
 #endif
