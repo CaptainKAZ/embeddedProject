@@ -19,16 +19,16 @@ PID_Param yawPIDParam = {
 PID_Param omegaPIDParam = {
     .Int_type = NORMAL_INT, .kB = 0, .kD = 0, .kI = 0, .kP = 0.01, .N = 0};
 PID_Param xPIDParam = {
-    .Int_type = NORMAL_INT, .kB = 0, .kD = 0, .kI = 0, .kP = 0.004, .N = 0};
+    .Int_type = NORMAL_INT, .kB = 0, .kD = 0, .kI = 0, .kP = 0.005, .N = 0};
 PID_Param yPIDParam = {
-    .Int_type = NORMAL_INT, .kB = 0, .kD = 0.001, .kI = 0.0, .kP = 0.0035, .N = 0};
+    .Int_type = NORMAL_INT, .kB = 0, .kD = 0.0011, .kI = 0.0, .kP = 0.0035, .N = 0};
 
 PID_Constraint yawConstraint = {
     .inMin = 0, .inMax = 0, .outMin = -720, .outMax = 720};
 PID_Constraint omegaConstraint = {
     .inMin = -0, .inMax = 0, .outMin = -0.7, .outMax = 0.8};
 PID_Constraint xConstraint = {
-    .inMin = -0, .inMax = 0, .outMin = -0.7, .outMax = 1.0};
+    .inMin = -0, .inMax = 0, .outMin = -0.7, .outMax = 1.1};
 PID_Constraint yConstraint = {
     .inMin = -0, .inMax = 0, .outMin = -0.8, .outMax = 0.8};
 
@@ -169,7 +169,7 @@ void control_task_update(void) {
         &yPID, yTarget, -116 + (tof[TOF_LEFT_FRONT] + tof[TOF_LEFT_BACK]) / 2);
     float set_omega = PID_ControllerUpdate(&yawPID, yawTarget, kalman.theta);
     chassisW = PID_ControllerUpdate(&omegaPID, set_omega, kalman.omega);
-    if (tof[TOF_FRONT] < 550 && fabsf(kalman.theta - yawTarget) <5) {
+    if (tof[TOF_FRONT] < 450 && fabsf(kalman.theta - yawTarget) <5) {
       stage = 7;
       
     }
@@ -183,15 +183,25 @@ void control_task_update(void) {
         &yPID, yTarget, -116 + (tof[TOF_LEFT_FRONT] + tof[TOF_LEFT_BACK]) / 2);
     float set_omega = PID_ControllerUpdate(&yawPID, yawTarget, kalman.theta);
     chassisW = PID_ControllerUpdate(&omegaPID, set_omega, kalman.omega);
-    if (fabsf(kalman.theta - yawTarget) < 10) {
+    if (fabsf(kalman.theta - yawTarget) < 5) {
       stage = 8;
-      while (1) {
-        osDelay(1);
-      }
     }
   } else if (stage == 8) {
     //找颜色
-    chassisX = chassisY = chassisW = 0;
+    yawTarget = 0;
+    yawTarget = 0;
+    xTarget = 0;
+    chassisX = 0.4;
+    chassisY = PID_ControllerUpdate(
+        &yPID, yTarget, 110 - (tof[TOF_RIGHT_FRONT]));
+    float set_omega = PID_ControllerUpdate(&yawPID, yawTarget, kalman.theta);
+    chassisW = PID_ControllerUpdate(&omegaPID, set_omega, kalman.omega);
+    if(HAL_GPIO_ReadPin(RGB_DETECT_GPIO_Port, RGB_DETECT_Pin) == GPIO_PIN_RESET){
+      stage = 9;
+      while(1){
+        osDelay(1);
+      }
+    }
   }
 
   Chassis_setSpeed(chassisX, chassisY, chassisW, 10);

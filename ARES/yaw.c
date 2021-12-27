@@ -15,7 +15,7 @@
 #include "quaternion_supervisor.h"
 #include "yaw_kalman.h"
 
-int tof[5];
+int tof[6];
 
 struct mpu_convet {
   float gyro_sens;
@@ -135,6 +135,9 @@ void mpuGetData(void) {
     mpu_data.accel[2] = (float)accel_short[2] / mpu_convet.accel_sens;
     mpu_data.dt[1] = xTaskGetTickCount() - mpu_data.timeStamp[1];
     mpu_data.timeStamp[1] = xTaskGetTickCount();
+    if(mpu_data.timeStamp[1]%100==0){
+      HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
+    }
   }
   if (compass_short[0] != mpu_data.compass_short[0] ||
       compass_short[1] != mpu_data.compass_short[1] ||

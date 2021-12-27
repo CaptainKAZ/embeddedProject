@@ -19,21 +19,21 @@ void Chassis_setSpeed(float xSpeed, float ySpeed, float wSpeed,
   chassis.wSpeed = wSpeed;
   chassis.timeout = timeout;
 }
-static uint32_t lastTime=0;
+static uint32_t lastTime = 0;
 void chassis_task(void) {
   osDelay(4000);
-//for(;;) osDelay(1);
-  while(HAL_GPIO_ReadPin(KEY2_GPIO_Port,KEY2_Pin)!=GPIO_PIN_RESET){
+  // for(;;) osDelay(1);
+  while (HAL_GPIO_ReadPin(KEY2_GPIO_Port, KEY2_Pin) != GPIO_PIN_RESET) {
     osDelay(1);
   }
-  
+
   for (;;) {
-    lastTime=xTaskGetTickCount();
+    lastTime = xTaskGetTickCount();
     if (control_task_init()) {
       control_task_update();
     } else {
       chassis.wSpeed = 0.3;
-      chassis.timeout=1;
+      chassis.timeout = 1;
     }
     chassis.wheelSpeed[FRONT_LEFT] =
         chassis.xSpeed + chassis.ySpeed - chassis.r * chassis.wSpeed;
@@ -49,9 +49,17 @@ void chassis_task(void) {
         maxAbs = fabsf(chassis.wheelSpeed[i]);
       }
     }
-    if (maxAbs > 1) {
-      for (int i = 0; i < 4; i++) {
-        chassis.wheelSpeed[i] /= maxAbs;
+    // if (maxAbs > 1) {
+    //   for (int i = 0; i < 4; i++) {
+    //     chassis.wheelSpeed[i] /= maxAbs;
+    //   }
+    // }
+    for (uint8_t i = 0; i < 4; i++) {
+      if (chassis.wheelSpeed[i] > 1) {
+        chassis.wheelSpeed[i] = 1;
+      }
+      if (chassis.wheelSpeed[i] < -1) {
+        chassis.wheelSpeed[i] = -1;
       }
     }
     if (chassis.timeout > 0) {
@@ -59,9 +67,9 @@ void chassis_task(void) {
       for (int i = 0; i < 4; i++) {
         int pwm = 1500;
         pwm += chassis.wheelSpeed[i] * 1000;
-        sprintf(chassisCommand, "#%03dP%04dT%04d!\r\n", i, pwm, 100);
+        sprintf(chassisCommand, "#%03dP%04dT%04d!\r\n", i, pwm, 40);
         HAL_UART_Transmit(&huart2, (uint8_t *)chassisCommand,
-                          sizeof(chassisCommand)-1, 20);
+                          sizeof(chassisCommand) - 1, 20);
       }
     }
     vTaskDelayUntil(&lastTime, 20);

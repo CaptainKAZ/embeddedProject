@@ -9,7 +9,7 @@
 uint8_t tof_uart_count = 0;
 uint8_t tof_uart_rx_buffer[TOF_UART_RX_BUFFER_SIZE];
 
-int tofBias[5] = {8, 18, 9, 1, 32};
+int tofBias[6] = {8, 18, 9, 1, 32,0};
 
 float tof_float[5];
 
@@ -39,7 +39,7 @@ void UsartReceive_IDLE(UART_HandleTypeDef *huart) {
       if (tof_uart_rx_buffer[tof_uart_count - 1] == '\n' &&
           tof_uart_rx_buffer[tof_uart_count - 2] == '\r') {
         if (tof_uart_rx_buffer[tof_uart_count - 5] >= 'A' &&
-            tof_uart_rx_buffer[tof_uart_count - 5] <= 'E') {
+            tof_uart_rx_buffer[tof_uart_count - 5] <= 'F') {
           uint8_t id = tof_uart_rx_buffer[tof_uart_count - 5] - 'A';
           tof[id] = tof_uart_rx_buffer[tof_uart_count - 4] << 8 |
                     tof_uart_rx_buffer[tof_uart_count - 3];

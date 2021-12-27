@@ -15,7 +15,8 @@
 			"vl53l0x_platform.h": "c",
 			"vl53l0x_api.h": "c",
 			"vl53l0x_api_calibration.h": "c",
-			"myiic.h": "c"
+			"myiic.h": "c",
+			"tof.h": "c"
 		}
 	}
 }
