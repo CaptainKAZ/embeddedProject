@@ -1,26 +1,26 @@
 #ifndef _MYIIC_H
 #define _MYIIC_H
 #include "main.h"
-
+//#define MY_IIC
 // IO方向设置
 #define SDA_IN()                     \
   {                                  \
-    GPIOH->MODER &= ~(3 << (5 * 2)); \
-    GPIOH->MODER |= 0 << 5 * 2;      \
+    GPIOB->MODER &= ~(3 << (9 * 2)); \
+    GPIOB->MODER |= 0 << 9 * 2;      \
   }  // PH5输入模式
 #define SDA_OUT()                    \
   {                                  \
-    GPIOH->MODER &= ~(3 << (5 * 2)); \
-    GPIOH->MODER |= 1 << 5 * 2;      \
+    GPIOB->MODER &= ~(3 << (9 * 2)); \
+    GPIOB->MODER |= 1 << 9 * 2;      \
   }  // PH5输出模式
 // IO操作
 #define IIC_SCL(n)                                        \
-  (n ? HAL_GPIO_WritePin(GPIOH, GPIO_PIN_4, GPIO_PIN_SET) \
-     : HAL_GPIO_WritePin(GPIOH, GPIO_PIN_4, GPIO_PIN_RESET))  // SCL
+  (n ? HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET) \
+     : HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_RESET))  // SCL
 #define IIC_SDA(n)                                        \
-  (n ? HAL_GPIO_WritePin(GPIOH, GPIO_PIN_5, GPIO_PIN_SET) \
-     : HAL_GPIO_WritePin(GPIOH, GPIO_PIN_5, GPIO_PIN_RESET))  // SDA
-#define READ_SDA HAL_GPIO_ReadPin(GPIOH, GPIO_PIN_5)          //输入SDA
+  (n ? HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_SET) \
+     : HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_RESET))  // SDA
+#define READ_SDA HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_9)          //输入SDA
 
 //IIC所有操作函数
 void IIC_Init(void);                   //初始化IIC的IO口

@@ -1,0 +1,62 @@
+Date : 2021-12-27 10:33:11
+Directory : c:\Users\ZouYu\Documents\embeddedProject\ARES
+Total : 36 files,  2494 codes, 619 comments, 349 blanks, all 3462 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| C        |         22 |      2,160 |        418 |        277 |      2,855 |
+| C++      |         14 |        334 |        201 |         72 |        607 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                         | files      | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                            |         36 |      2,494 |        619 |        349 |      3,462 |
+| algorithm                                                                    |         13 |        588 |        357 |        103 |      1,048 |
++------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                                                     | language | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| c:\Users\ZouYu\Documents\embeddedProject\ARES\PID.c                          | C        |        114 |         19 |         16 |        149 |
+| c:\Users\ZouYu\Documents\embeddedProject\ARES\PID.h                          | C++      |         51 |         19 |          7 |         77 |
+| c:\Users\ZouYu\Documents\embeddedProject\ARES\ahrs.c                         | C        |        218 |         41 |         16 |        275 |
+| c:\Users\ZouYu\Documents\embeddedProject\ARES\algorithm\bezier_trajectory.c  | C        |         40 |         38 |          4 |         82 |
+| c:\Users\ZouYu\Documents\embeddedProject\ARES\algorithm\bezier_trajectory.h  | C++      |         13 |         17 |          3 |         33 |
+| c:\Users\ZouYu\Documents\embeddedProject\ARES\algorithm\fsm.c                | C        |         22 |         17 |          2 |         41 |
+| c:\Users\ZouYu\Documents\embeddedProject\ARES\algorithm\fsm.h                | C++      |         19 |         49 |          6 |         74 |
+| c:\Users\ZouYu\Documents\embeddedProject\ARES\algorithm\median_filter.c      | C        |          0 |          0 |          1 |          1 |
+| c:\Users\ZouYu\Documents\embeddedProject\ARES\algorithm\quintic_trajectory.c | C        |         51 |         43 |          5 |         99 |
+| c:\Users\ZouYu\Documents\embeddedProject\ARES\algorithm\quintic_trajectory.h | C++      |         14 |         17 |          5 |         36 |
+| c:\Users\ZouYu\Documents\embeddedProject\ARES\algorithm\s_curve.c            | C        |        151 |         42 |         28 |        221 |
+| c:\Users\ZouYu\Documents\embeddedProject\ARES\algorithm\s_curve.h            | C++      |         36 |         17 |          3 |         56 |
+| c:\Users\ZouYu\Documents\embeddedProject\ARES\algorithm\small_queue.c        | C        |         40 |         17 |          8 |         65 |
+| c:\Users\ZouYu\Documents\embeddedProject\ARES\algorithm\small_queue.h        | C++      |         17 |         31 |          5 |         53 |
+| c:\Users\ZouYu\Documents\embeddedProject\ARES\algorithm\user_lib.c           | C        |        132 |         52 |         21 |        205 |
+| c:\Users\ZouYu\Documents\embeddedProject\ARES\algorithm\user_lib.h           | C++      |         53 |         17 |         12 |         82 |
+| c:\Users\ZouYu\Documents\embeddedProject\ARES\chassis.c                      | C        |         61 |          1 |          8 |         70 |
+| c:\Users\ZouYu\Documents\embeddedProject\ARES\chassis.h                      | C++      |         20 |         11 |          6 |         37 |
+| c:\Users\ZouYu\Documents\embeddedProject\ARES\control.c                      | C        |        175 |         14 |         11 |        200 |
+| c:\Users\ZouYu\Documents\embeddedProject\ARES\feedback_task.c                | C        |         32 |         17 |          4 |         53 |
+| c:\Users\ZouYu\Documents\embeddedProject\ARES\feedback_task.h                | C++      |         15 |         18 |          4 |         37 |
+| c:\Users\ZouYu\Documents\embeddedProject\ARES\fmc_driver.c                   | C        |         34 |         11 |         12 |         57 |
+| c:\Users\ZouYu\Documents\embeddedProject\ARES\fmc_driver.h                   | C++      |         16 |          0 |          4 |         20 |
+| c:\Users\ZouYu\Documents\embeddedProject\ARES\gravity.c                      | C        |         37 |          0 |          7 |         44 |
+| c:\Users\ZouYu\Documents\embeddedProject\ARES\iic_mpu9250.c                  | C        |        120 |         15 |         21 |        156 |
+| c:\Users\ZouYu\Documents\embeddedProject\ARES\iic_mpu9250.h                  | C++      |         20 |          1 |          3 |         24 |
+| c:\Users\ZouYu\Documents\embeddedProject\ARES\myiic.c                        | C        |        104 |         14 |          9 |        127 |
+| c:\Users\ZouYu\Documents\embeddedProject\ARES\myiic.h                        | C++      |         31 |          4 |          3 |         38 |
+| c:\Users\ZouYu\Documents\embeddedProject\ARES\tof.c                          | C        |        170 |          9 |         13 |        192 |
+| c:\Users\ZouYu\Documents\embeddedProject\ARES\tof.h                          | C++      |         13 |          0 |          7 |         20 |
+| c:\Users\ZouYu\Documents\embeddedProject\ARES\tof_uart.c                     | C        |         59 |          0 |          8 |         67 |
+| c:\Users\ZouYu\Documents\embeddedProject\ARES\vl53l0x_port.c                 | C        |        138 |          4 |         23 |        165 |
+| c:\Users\ZouYu\Documents\embeddedProject\ARES\vl53l0x_port_deprecated.c      | C        |        191 |         15 |         35 |        241 |
+| c:\Users\ZouYu\Documents\embeddedProject\ARES\yaw.c                          | C        |        251 |         44 |         20 |        315 |
+| c:\Users\ZouYu\Documents\embeddedProject\ARES\yaw_kalman.c                   | C        |         20 |          5 |          5 |         30 |
+| c:\Users\ZouYu\Documents\embeddedProject\ARES\yaw_kalman.h                   | C++      |         16 |          0 |          4 |         20 |
+| Total                                                                        |          |      2,494 |        619 |        349 |      3,462 |
++------------------------------------------------------------------------------+----------+------------+------------+------------+------------+

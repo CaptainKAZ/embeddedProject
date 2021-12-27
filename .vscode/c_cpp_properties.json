@@ -27,7 +27,9 @@
                 ".\\Middlewares\\Third_Party\\FreeRTOS\\Source",
                 ".\\Middlewares\\Third_Party\\FreeRTOS\\Source\\portable\\MemMang",
                 ".\\MotionDriver\\driver\\stm32L",
-                ".\\MotionDriver\\mpl"
+                ".\\MotionDriver\\mpl",
+                "${workspaceFolder}/VL53L0X_1.0.4/Api/platform",
+                "${workspaceFolder}/VL53L0X_1.0.4/Api/core/inc"
             ],
             "defines": [
                 "USE_HAL_DRIVER",

@@ -5,10 +5,10 @@
 
 //Copilot Suggest me to define so
 typedef enum wheelPos{
-    FRONT_LEFT=0,
-    FRONT_RIGHT,
-    BACK_LEFT,
-    BACK_RIGHT
+    FRONT_LEFT=3,
+    FRONT_RIGHT=2,
+    BACK_LEFT=0,
+    BACK_RIGHT=1,
 }wheelPos;
 
 /*

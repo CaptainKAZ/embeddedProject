@@ -11,7 +11,11 @@
 			"stm32f7xx_hal.h": "c",
 			"inv_mpu.h": "c",
 			"inv_mpu_dmp_motion_driver.h": "c",
-			"quaternion_supervisor.h": "c"
+			"quaternion_supervisor.h": "c",
+			"vl53l0x_platform.h": "c",
+			"vl53l0x_api.h": "c",
+			"vl53l0x_api_calibration.h": "c",
+			"myiic.h": "c"
 		}
 	}
 }

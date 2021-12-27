@@ -106,6 +106,7 @@ int main(void)
   MX_RNG_Init();
   MX_I2C2_Init();
   MX_UART7_Init();
+  MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
   //SDRAM_Init();
   /* USER CODE END 2 */

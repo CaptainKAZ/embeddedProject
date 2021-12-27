@@ -2,13 +2,14 @@
 #include "arm_math.h"
 #include <float.h>
 
+
 //快速开方
-fp32 invSqrt(fp32 num) {
-  fp32 halfnum = 0.5f * num;
-  fp32 y       = num;
+float invSqrt(float num) {
+  float halfnum = 0.5f * num;
+  float y       = num;
   long i       = *(long *)&y;
   i            = 0x5f3759df - (i >> 1);
-  y            = *(fp32 *)&i;
+  y            = *(float *)&i;
   y            = y * (1.5f - (halfnum * y * y));
   return y;
 }
@@ -20,9 +21,9 @@ fp32 invSqrt(fp32 num) {
   * @param    y1        点1的y坐标
   * @param    x2        点2的x坐标
   * @param    y2        点2的y坐标
-  * @return   fp32      两点之间的距离
+  * @return   float      两点之间的距离
   */
-fp32 distance_2d(fp32 x1, fp32 y1, fp32 x2, fp32 y2) { return 1 / invSqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2)); }
+float distance_2d(float x1, float y1, float x2, float y2) { return 1 / invSqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2)); }
 
 /**
  * @brief          斜波函数初始化
@@ -33,7 +34,7 @@ fp32 distance_2d(fp32 x1, fp32 y1, fp32 x2, fp32 y2) { return 1 / invSqrt((x1 - 
  * @param[in]      最小值
  * @retval         返回空
  */
-void ramp_init(ramp_function_source_t *ramp_source_type, fp32 frame_period, fp32 max, fp32 min) {
+void ramp_init(ramp_function_source_t *ramp_source_type, float frame_period, float max, float min) {
   ramp_source_type->frame_period = frame_period;
   ramp_source_type->max_value    = max;
   ramp_source_type->min_value    = min;
@@ -50,7 +51,7 @@ void ramp_init(ramp_function_source_t *ramp_source_type, fp32 frame_period, fp32
  * @param[in]      滤波参数
  * @retval         返回空
  */
-void ramp_calc(ramp_function_source_t *ramp_source_type, fp32 input) {
+void ramp_calc(ramp_function_source_t *ramp_source_type, float input) {
   ramp_source_type->input = input;
   ramp_source_type->out += ramp_source_type->input * ramp_source_type->frame_period;
   if (ramp_source_type->out > ramp_source_type->max_value) {
@@ -67,7 +68,7 @@ void ramp_calc(ramp_function_source_t *ramp_source_type, fp32 input) {
  * @param[in]      滤波参数
  * @retval         返回空
  */
-void first_order_filter_init(first_order_filter_type_t *first_order_filter_type, fp32 frame_period, const fp32 num[1]) {
+void first_order_filter_init(first_order_filter_type_t *first_order_filter_type, float frame_period, const float num[1]) {
   first_order_filter_type->frame_period = frame_period;
   first_order_filter_type->num[0]       = num[0];
   first_order_filter_type->input        = 0.0f;
@@ -81,7 +82,7 @@ void first_order_filter_init(first_order_filter_type_t *first_order_filter_type,
  * @param[in]      间隔的时间，单位 s
  * @retval         返回空
  */
-void first_order_filter_cali(first_order_filter_type_t *first_order_filter_type, fp32 input) {
+void first_order_filter_cali(first_order_filter_type_t *first_order_filter_type, float input) {
   first_order_filter_type->input = input;
   first_order_filter_type->out =
       first_order_filter_type->num[0] / (first_order_filter_type->num[0] + first_order_filter_type->frame_period) *
@@ -91,7 +92,7 @@ void first_order_filter_cali(first_order_filter_type_t *first_order_filter_type,
 }
 
 //绝对限制
-void abs_limit(fp32 *num, fp32 Limit) {
+void abs_limit(float *num, float Limit) {
   if (*num > Limit) {
     *num = Limit;
   } else if (*num < -Limit) {
@@ -100,7 +101,7 @@ void abs_limit(fp32 *num, fp32 Limit) {
 }
 
 //判断符号位
-fp32 sign(fp32 value) {
+float sign(float value) {
   if (value >= 0.0f) {
     return 1.0f;
   } else {
@@ -109,7 +110,7 @@ fp32 sign(fp32 value) {
 }
 
 //浮点死区
-fp32 fp32_deadline(fp32 Value, fp32 minValue, fp32 maxValue) {
+float float_deadline(float Value, float minValue, float maxValue) {
   if (Value < maxValue && Value > minValue) {
     Value = 0.0f;
   }
@@ -125,7 +126,7 @@ int16_t int16_deadline(int16_t Value, int16_t minValue, int16_t maxValue) {
 }
 
 //限幅函数
-fp32 fp32_constrain(fp32 Value, fp32 minValue, fp32 maxValue) {
+float float_constrain(float Value, float minValue, float maxValue) {
   if (Value < minValue)
     return minValue;
   else if (Value > maxValue)
@@ -145,18 +146,18 @@ int16_t int16_constrain(int16_t Value, int16_t minValue, int16_t maxValue) {
 }
 
 //循环限幅函数
-fp32 loop_fp32_constrain(fp32 Input, fp32 minValue, fp32 maxValue) {
+float loop_float_constrain(float Input, float minValue, float maxValue) {
   if (maxValue < minValue) {
     return Input;
   }
 
   if (Input > maxValue) {
-    fp32 len = maxValue - minValue;
+    float len = maxValue - minValue;
     while (Input > maxValue) {
       Input -= len;
     }
   } else if (Input < minValue) {
-    fp32 len = maxValue - minValue;
+    float len = maxValue - minValue;
     while (Input < minValue) {
       Input += len;
     }
@@ -164,23 +165,8 @@ fp32 loop_fp32_constrain(fp32 Input, fp32 minValue, fp32 maxValue) {
   return Input;
 }
 
-__INLINE fp32 fminf(fp32 x, fp32 y) {
-  if (x < y) {
-    return x;
-  } else {
-    return y;
-  }
-}
 
-__INLINE fp32 fmaxf(fp32 x, fp32 y) {
-  if (x > y) {
-    return x;
-  } else {
-    return y;
-  }
-}
-
-fp32 atan2_fast(fp32 x, fp32 y) {
+float atan2_fast(float x, float y) {
   float ax = __fabs(x), ay = __fabs(y);
   float a = fminf(ax, ay) / (fmaxf(ax, ay) + FLT_EPSILON);
   float s = a * a;
@@ -197,19 +183,10 @@ fp32 atan2_fast(fp32 x, fp32 y) {
 //弧度格式化为-PI~PI
 
 //角度格式化为-180~180
-fp32 theta_format(fp32 Ang) { return loop_fp32_constrain(Ang, -180.0f, 180.0f); }
+float theta_format(float Ang) { return loop_float_constrain(Ang, -180.0f, 180.0f); }
 
-inline int is_in_isr(void) {
-  volatile int tmp = 0;
-  __asm
-  {
-    MRS tmp,IPSR
-  }
-  return tmp & 0x1f;
-}
-
-fp32 maxabs4f(fp32 value0, fp32 value1, fp32 value2, fp32 value3) {
-  fp32 ret = 0;
+float maxabs4f(float value0, float value1, float value2, float value3) {
+  float ret = 0;
 
   if (_fabsf(value0) > ret) {
     ret = __fabsf(value0);

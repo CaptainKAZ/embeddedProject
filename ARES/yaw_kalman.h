@@ -1,6 +1,6 @@
 #ifndef YAW_KALMAN_H
 #define YAW_KALMAN_H
-#incldue "main.h"
+#include "main.h"
 
 typedef struct YawKalman
 {
@@ -8,6 +8,7 @@ typedef struct YawKalman
   float omega;
   float pTheta;
   float pOmega;
+  uint8_t initted;
 } YawKalman;
 
 extern void YawKalman_init(YawKalman *kalman,float thetaGuess);

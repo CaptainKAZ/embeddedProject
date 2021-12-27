@@ -61,17 +61,17 @@ const osThreadAttr_t chassisTask_attributes = {
   .stack_size = sizeof(chassisTaskBuffer),
   .priority = (osPriority_t) osPriorityNormal,
 };
-/* Definitions for ahrsTask */
-osThreadId_t ahrsTaskHandle;
+/* Definitions for yawTask */
+osThreadId_t yawTaskHandle;
 uint32_t ahrsTaskBuffer[ 512 ];
 osStaticThreadDef_t ahrsTaskControlBlock;
-const osThreadAttr_t ahrsTask_attributes = {
-  .name = "ahrsTask",
+const osThreadAttr_t yawTask_attributes = {
+  .name = "yawTask",
   .cb_mem = &ahrsTaskControlBlock,
   .cb_size = sizeof(ahrsTaskControlBlock),
   .stack_mem = &ahrsTaskBuffer[0],
   .stack_size = sizeof(ahrsTaskBuffer),
-  .priority = (osPriority_t) osPriorityNormal,
+  .priority = (osPriority_t) osPriorityHigh,
 };
 /* Definitions for feedbackTask */
 osThreadId_t feedbackTaskHandle;
@@ -85,6 +85,18 @@ const osThreadAttr_t feedbackTask_attributes = {
   .stack_size = sizeof(feedbackTaskBuffer),
   .priority = (osPriority_t) osPriorityLow,
 };
+/* Definitions for tofTask */
+osThreadId_t tofTaskHandle;
+uint32_t tofTaskBuffer[ 512 ];
+osStaticThreadDef_t tofTaskControlBlock;
+const osThreadAttr_t tofTask_attributes = {
+  .name = "tofTask",
+  .cb_mem = &tofTaskControlBlock,
+  .cb_size = sizeof(tofTaskControlBlock),
+  .stack_mem = &tofTaskBuffer[0],
+  .stack_size = sizeof(tofTaskBuffer),
+  .priority = (osPriority_t) osPriorityAboveNormal,
+};
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -92,8 +104,9 @@ const osThreadAttr_t feedbackTask_attributes = {
 /* USER CODE END FunctionPrototypes */
 
 void chassis_task(void *argument);
-void ahrs_task(void *argument);
+void yaw_task(void *argument);
 void feedback_task(void *argument);
+void tof_task(void *argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -172,11 +185,14 @@ void MX_FREERTOS_Init(void) {
   /* creation of chassisTask */
   chassisTaskHandle = osThreadNew(chassis_task, NULL, &chassisTask_attributes);
 
-  /* creation of ahrsTask */
-  ahrsTaskHandle = osThreadNew(ahrs_task, NULL, &ahrsTask_attributes);
+  /* creation of yawTask */
+  yawTaskHandle = osThreadNew(yaw_task, NULL, &yawTask_attributes);
 
   /* creation of feedbackTask */
   feedbackTaskHandle = osThreadNew(feedback_task, NULL, &feedbackTask_attributes);
+
+  /* creation of tofTask */
+  tofTaskHandle = osThreadNew(tof_task, NULL, &tofTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -206,22 +222,22 @@ __weak void chassis_task(void *argument)
   /* USER CODE END chassis_task */
 }
 
-/* USER CODE BEGIN Header_ahrs_task */
+/* USER CODE BEGIN Header_yaw_task */
 /**
-* @brief Function implementing the ahrsTask thread.
+* @brief Function implementing the yawTask thread.
 * @param argument: Not used
 * @retval None
 */
-/* USER CODE END Header_ahrs_task */
-__weak void ahrs_task(void *argument)
+/* USER CODE END Header_yaw_task */
+__weak void yaw_task(void *argument)
 {
-  /* USER CODE BEGIN ahrs_task */
+  /* USER CODE BEGIN yaw_task */
   /* Infinite loop */
   for(;;)
   {
     osDelay(1);
   }
-  /* USER CODE END ahrs_task */
+  /* USER CODE END yaw_task */
 }
 
 /* USER CODE BEGIN Header_feedback_task */
@@ -240,6 +256,24 @@ __weak void feedback_task(void *argument)
     osDelay(1);
   }
   /* USER CODE END feedback_task */
+}
+
+/* USER CODE BEGIN Header_tof_task */
+/**
+* @brief Function implementing the tofTask thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_tof_task */
+__weak void tof_task(void *argument)
+{
+  /* USER CODE BEGIN tof_task */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END tof_task */
 }
 
 /* Private application code --------------------------------------------------*/
