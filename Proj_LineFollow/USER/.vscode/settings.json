@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "chassis.h": "c",
+        "sdram.h": "c"
+    }
+}
