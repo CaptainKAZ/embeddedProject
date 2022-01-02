@@ -19,16 +19,16 @@ PID_Param yawPIDParam = {
 PID_Param omegaPIDParam = {
     .Int_type = NORMAL_INT, .kB = 0, .kD = 0, .kI = 0, .kP = 0.01, .N = 0};
 PID_Param xPIDParam = {
-    .Int_type = NORMAL_INT, .kB = 0, .kD = 0, .kI = 0, .kP = 0.005, .N = 0};
+    .Int_type = NORMAL_INT, .kB = 0, .kD = 0, .kI = 0, .kP = 0.002, .N = 0};
 PID_Param yPIDParam = {
     .Int_type = NORMAL_INT, .kB = 0, .kD = 0.0011, .kI = 0.0, .kP = 0.0035, .N = 0};
 
 PID_Constraint yawConstraint = {
     .inMin = 0, .inMax = 0, .outMin = -720, .outMax = 720};
 PID_Constraint omegaConstraint = {
-    .inMin = -0, .inMax = 0, .outMin = -0.7, .outMax = 0.8};
+    .inMin = -0, .inMax = 0, .outMin = -0.8, .outMax = 0.8};
 PID_Constraint xConstraint = {
-    .inMin = -0, .inMax = 0, .outMin = -0.7, .outMax = 1.1};
+    .inMin = -0, .inMax = 0, .outMin = -1.0, .outMax = 1.0};
 PID_Constraint yConstraint = {
     .inMin = -0, .inMax = 0, .outMin = -0.8, .outMax = 0.8};
 
@@ -109,7 +109,7 @@ void control_task_update(void) {
         &omegaPID, 0,
         180 / 3.141592653589793238462643383279 *
             atan2(tof[TOF_RIGHT_FRONT] - tof[TOF_RIGHT_BACK], 230));
-    if (tof[TOF_FRONT] < 480 &&
+    if (tof[TOF_FRONT] < 590 &&
         fabsf(180 / 3.141592653589793238462643383279 *
               atan2(tof[TOF_RIGHT_FRONT] - tof[TOF_RIGHT_BACK], 230)) < 10) {
       yawTarget = kalman.theta + 90;
@@ -169,7 +169,7 @@ void control_task_update(void) {
         &yPID, yTarget, -116 + (tof[TOF_LEFT_FRONT] + tof[TOF_LEFT_BACK]) / 2);
     float set_omega = PID_ControllerUpdate(&yawPID, yawTarget, kalman.theta);
     chassisW = PID_ControllerUpdate(&omegaPID, set_omega, kalman.omega);
-    if (tof[TOF_FRONT] < 450 && fabsf(kalman.theta - yawTarget) <5) {
+    if (tof[TOF_FRONT] < 520 && fabsf(kalman.theta - yawTarget) <5) {
       stage = 7;
       
     }
